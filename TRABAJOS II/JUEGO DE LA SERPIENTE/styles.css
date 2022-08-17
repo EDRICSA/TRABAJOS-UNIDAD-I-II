@@ -1,0 +1,60 @@
+*{
+font-family: 'karmatic-arcade', monospace;
+}
+#board, .boardInfo {
+    max-width: 400px; 
+}
+
+#board {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+}
+
+#start, .boardInfo {
+    font-size: 25px;
+}
+
+#gameOver {
+    display: none;
+}
+
+.boardInfo {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+#start {
+    background-color: #1b238e;
+    border: none;
+    color: rgb(255, 255, 255);
+}
+
+#scoreBoard {
+    display: inline-flex;
+}
+
+.square {
+    aspect-ratio: 1;
+}
+
+.emptySquare {
+    background-color: #000000;
+    border: 1px solid rgb(174, 171, 223);
+    box-shadow: 0 0 10px rgb(82, 74, 227), 0 0 10px rgb(82, 74, 227), 0 0  10px rgb(82, 74, 227);
+  ;
+}
+
+.snakeSquare {
+    background-color: #ffffff;
+    box-shadow: 0 0 40px #ffffff, 0 0 40px #ffffff, 0 0  40px #ffffff;
+    border: 1px solid rgb(0, 0, 0);
+}
+
+.foodSquare {
+    background: #060de5;
+
+    box-shadow: 0 0 10px #060de5, 0 0 20px #060de5, 0 0  10px #060de5;
+    
+    border: 1px solid #000;
+}
