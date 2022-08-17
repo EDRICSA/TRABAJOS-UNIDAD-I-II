@@ -1,0 +1,168 @@
+var tablero = [];
+var i, j = 1;
+for (i=0; i<=9; i++){
+    tablero[i]=[];
+    for (j=0; j<=9; j++){
+      tablero[i][j]=0;
+    }
+  }
+var text = ""
+for ( i in tablero){
+  for (j in tablero[i]){
+      text += "<div class='casilla' id='"+ parseInt(i+j,10) +"'>" + tablero[i][j] + "</div> ";   
+  }
+  text += "\n<div class='clear'></div>";
+}
+document.getElementById("tablero").innerHTML = text;
+
+// cambiar  numero 0 por 1 con arrastrando un objeto
+
+var barco = document.getElementById("barco");
+var casillas = document.querySelectorAll(".casilla");
+barco.onclick = function(){
+  document.body.style.cursor = "not-allowed";
+  this.classList.add('transparente');
+  for (i=0; i<=99;i++){
+    casillas[i].onmouseover = function () {agregar_barco(this, 0); };
+    casillas[i].onclick = function (){agregar_barco(this, 1);};
+    casillas[i].onmouseout = function (){quitar_barco(this);}
+  }
+}
+
+function agregar_barco(o, b){
+      o.innerHTML = 1;
+      o.classList.add('conBarco');
+      o.style.cursor = "crosshair"
+      var alr = casillas_alrededor();
+       for (k in alr[o.id]){
+      casillas[alr[o.id][k]].innerHTML = 2;
+       }
+      if (b==1) {
+        o.removeAttribute('style');
+        document.body.removeAttribute('style');
+        for (i in casillas){
+          casillas[i].onmouseover = function () {return;}
+          casillas[i].onmouseout = function () {return;}
+          casillas[i].onclick = function () {return;}
+        };
+      }
+}
+function quitar_barco(o){
+      o.innerHTML = 0;
+      o.classList.remove('conBarco');
+      o.removeAttribute('style');
+        var alr = casillas_alrededor();
+       for (k in alr[o.id]){
+      casillas[alr[o.id][k]].innerHTML = 0;
+       }
+}
+function casillas_alrededor(){
+ var array = [];
+ for (var i=0; i<=9; i++){
+   for (var j=0; j<=9; j++){
+     //para el 0
+     if (i*10+j == 00){
+       array[i*10+j]=[1,10,11];
+     }
+     //para el 9
+     if (i*10+j == 09){
+       array[i*10+j]=[8,18,19];
+     }
+     //para el 90
+     if (i*10+j == 90){
+       array[i*10+j]=[80,81,91];
+     }
+     //para el 99
+     if (i*10+j == 99){
+       array[i*10+j]=[88,89,98];
+     }
+     //desde 1 hasta el 8
+     if (i*10+j > 00 && i*10+j <09 ){
+     array[i*10+j]=[(i*10+j-1),(i*10+j+1),(i*10+10+j-1),(i*10+10+j),(i*10+10+j+1)];
+     }
+     //desde el 91 al 98
+     if (i*10+j > 90 && i*10+j <99 ){
+     array[i*10+j]=[(i*10-10+j-1),(i*10-10+j),(i*10-10+j+1),i*10+j-1,i*10+j+1];
+     }
+     //los multiplos de 10
+     if(j==0 && i>0 && i<9){
+       array[i*10+j]=[i*10-10+j, i*10-10+j+1, i*10+j+1, i*10+10+j, i*10+10+j+1];
+     }
+      //los multiplos de 9
+     if(j==9 && i>0 && i<9){
+       array[i*10+j]=[i*10-10+j-1,i*10-10+j, i*10+j-1, i*10+10+j-1, i*10+10+j];
+     }
+     //para todo el resto
+     if (i!=0 && i!=9 && j!=0 && j!=9 ){
+       array[i*10+j]=[(i*10-10+j-1),(i*10-10+j),(i*10-10+j+1),i*10+j-1,i*10+j+1,(i*10+10+j-1),(i*10+10+j),(i*10+10+j+1)];
+     } 
+   }
+ }
+  return array;
+}
+/* PRUEBA DE CASILLAS_ALREDEDOR
+var text = ""
+var alr = casillas_alrededor();
+for ( i in alr){
+  text += "<div class='casilla' id='"+ i + j +"'>" + i + "</div> "; 
+  for (j in alr[i]){
+      text += "<div class='casilla' id='"+ i + j +"'>" + alr[i][j] + "</div> ";   
+  }
+  text += "\n<div class='clear'></div>";
+}
+document.getElementById("prueba").innerHTML = text;
+*/
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BATALLA NAVAL</title>
+</head>
+<body>
+    <h1>Batalla Naval</h1>
+<div id="tablero"></div>
+<div class="barco" id="barco">1</div>
+<div id="prueba"></div>
+    
+</body>
+
+</html>
+blue:blue
+orange:orange
+body {
+  background-color:rgb(233, 159, 74);
+}
+#tablero {
+  display: block;
+}
+.casilla {
+  color: ANTIQUEWHITE;
+  width: 2em;
+  height: 2em;
+  display: inline-block;
+  text-align: center;
+  line-height: 2em;
+  background-color:blue;
+  margin: 2px 0;
+}
+.barco {
+  width: 2em;
+  height: 2em;
+  display: inline-block;
+  text-align: center;
+  line-height: 2em;
+  background-color:orange;
+  margin: 2px 0;
+}
+.transparente{
+  opacity: 0.5;
+}
+
+.conBarco{
+  background-color: orange;
+}
+.clear {
+  clear: both;
+}
